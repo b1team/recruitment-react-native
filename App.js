@@ -1,13 +1,52 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import Profile from './components/Profile';
+import HomeScreen from './components/Home';
+import { Icon } from 'native-base';
+import LoginForm from './components/LoginForm';
+import Null from './components/Null';
 
-function App(){
+
+function CustomDrawerContent(props) {
   return (
-    <View  style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>
-        Hello World 👨‍💻
-      </Text>
-    </View>
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+    </DrawerContentScrollView>
+  );
+}
+
+
+const Drawer = createDrawerNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="Home" drawerContent={props => <CustomDrawerContent {...props} />}>
+        <Drawer.Screen name="Home" component={HomeScreen} options={{
+          title: 'Trang chủ',
+          drawerIcon: () => (
+            <Icon
+              name="md-home"
+            />
+          ),
+        }} />
+
+        <Drawer.Screen name="Login" component={LoginForm} options={{
+          title: 'Đăng nhập',
+          drawerIcon: () => (
+            <Icon
+              name="ios-person"
+            />
+          ),
+        }} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
 
