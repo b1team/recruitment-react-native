@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Body, Item, Input, Button, Text } from 'native-base';
 import MainLogo from './Logo'
 import Drawer from './Drawer';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const styles = StyleSheet.create({
     username: {
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     },
     button: {
         width: 200,
-        marginTop: 8,
+        marginTop: 15,
         backgroundColor: '#0275d8',
         justifyContent: 'center',
         alignItems: 'center',
@@ -74,22 +75,20 @@ function SignUpButton() {
 function SignUpForm({ navigation }) {
 
     return (
-        <KeyboardAvoidingView
-      style={{ flex: 1}}
-      behavior="padding"
-    >
+        <View style={{ flex: 1 }}>
             <Drawer navigation={navigation} />
-            <Body>
-                <MainLogo width={130} height={130} />
-                <TextInput />
-                <SignUpButton />
-                <Text style={{ marginTop: 15 }}>Đã có tài khoản?
-                {/* TODO: link to login form */}
-                    <Text style={{ color: 'blue' }} onPress={() => alert("login form")}> Đăng nhập</Text>
-                </Text>
-            </Body>
-            <View style={{ height: 60 }} />
-        </KeyboardAvoidingView>
+            <KeyboardAwareScrollView style={{ flex: 1 }}>
+                <Body>
+                    <MainLogo width={130} height={130} />
+                    <TextInput />
+                    <SignUpButton />
+                    <Text style={{ marginTop: 15 }}>Đã có tài khoản?
+                    {/* TODO: link to login form */}
+                        <Text style={{ color: 'blue' }} onPress={() => alert("login form")}> Đăng nhập</Text>
+                    </Text>
+                </Body>
+            </KeyboardAwareScrollView>
+        </View>
     );
 }
 
