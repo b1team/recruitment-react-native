@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Left, Button, Icon } from 'native-base';
+import { Header, Left, Button, Icon, Title, Body, Container, Right } from 'native-base';
 
 
 function Drawer(props) {
@@ -10,6 +10,12 @@ function Drawer(props) {
                     <Icon name='menu' />
                 </Button>
             </Left>
+            <Body>
+                <Title>
+                    {props.name}
+                </Title>
+            </Body>
+            <Right></Right>
         </Header>
     );
 }
