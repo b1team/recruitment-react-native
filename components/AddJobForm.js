@@ -2,16 +2,16 @@ import React, {useState} from 'react';
 import { View, TextInput } from 'react-native';
 import { Item, Input, Button, Text, Form, Textarea, Icon, List } from 'native-base';
 import Drawer from './Drawer';
-import styles from '../Style/Styles';
+import styles from '../Style/CrudJobStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 function Numberic() {
     return (
-        <View style={styles.container}>
+        <View style={styles.numberPad}>
             <TextInput
                 placeholder="Nhập mức lương"
-                style={styles.TextInputStyle}
+                style={styles.numberPadInput}
                 keyboardType={'numeric'}
             />
         </View>
@@ -29,7 +29,7 @@ function Description() {
 function Buttons() {
     return (
         <View>
-            <Button success style={styles.addButton}>
+            <Button success style={styles.button}>
                 <Text style={{ fontSize: 16 }}>Thêm</Text>
             </Button>
             <Button success style={styles.destroyButton}>
@@ -40,21 +40,19 @@ function Buttons() {
 };
 
 function AddJobForm({ navigation }) {
-    const [emails_input, setEmails] = useState(['tungnt', 'ble']);
-    const [text_input, setText] = useState('');
     return (
         <View style={{ flex: 1 }}>
             <Drawer navigation={navigation} name={"Thêm việc"} />
             <KeyboardAwareScrollView style={{ flex: 1 }}>
-                <Item style={styles.job_name}>
+                <Item style={styles.textInput}>
                     <Input placeholder='Tên công việc' style={styles.input} />
                 </Item>
                 <Numberic />
-                <Item style={styles.address}>
+                <Item style={styles.textInput}>
                     <Input placeholder='Địa chỉ' style={styles.input} />
                 </Item>
                 <Description />
-                <Item style={styles.address}>
+                <Item style={styles.textInput}>
                     <Input placeholder='Gán thẻ' style={styles.input} />
                 </Item>
                 <Buttons />
