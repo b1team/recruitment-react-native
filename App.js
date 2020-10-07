@@ -6,11 +6,10 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import Profile from './components/Profile';
 import HomeScreen from './components/Home';
 import { Icon } from 'native-base';
 import LoginForm from './components/LoginForm';
-import Null from './components/Null';
+import SignUpForm from './components/SignUpForm';
 
 
 function CustomDrawerContent(props) {
@@ -39,6 +38,14 @@ function App() {
 
         <Drawer.Screen name="Login" component={LoginForm} options={{
           title: 'Đăng nhập',
+          drawerIcon: () => (
+            <Icon
+              name="ios-person"
+            />
+          ),
+        }} />
+        <Drawer.Screen name="SignUp" component={SignUpForm} options={{
+          title: 'Đăng ký',
           drawerIcon: () => (
             <Icon
               name="ios-person"
