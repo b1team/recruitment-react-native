@@ -79,7 +79,7 @@ function DetailJobScreen() {
     );
   }
 
-function HomeScreen({ navigation }) {
+function AppliedJobScreen({ navigation }) {
 
     return (
         <View style={{ flex: 1 }}>
@@ -122,14 +122,14 @@ function HomeScreen({ navigation }) {
 }
 
 const RootStack = createStackNavigator();
-function App() {
+function Applied() {
     return (
         <RootStack.Navigator mode="modal" headerMode="none">
-          <RootStack.Screen name="Jobs" component={HomeScreen} />
+          <RootStack.Screen name="AppliedJob" component={AppliedJobScreen} />
           <RootStack.Screen name="DetailJob" component={DetailJobScreen} />
         </RootStack.Navigator>
     );
   }
   
-  export default App;
+  export default Applied;
   
