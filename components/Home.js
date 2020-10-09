@@ -5,6 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Drawer from './Drawer';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
+import JobCard from './JobCard';
 
 var fake_data = {
     jobs: [
@@ -58,27 +59,7 @@ function HomeScreen({ navigation }) {
                 {fake_data.jobs.map((item, index) => {
                     return (
                         <TouchableOpacity key={index} onPress={() => navigation.navigate('DetailJob')}>
-                            <Card pointerEvents='none'>
-                                <CardItem header bordered>
-                                    <Text style={{ fontSize: 20 }}>{item.title}</Text>
-                                </CardItem>
-                                <CardItem bordered>
-                                    <Body>
-                                        <Text>
-                                            {item.desciption}
-                                        </Text>
-                                    </Body>
-                                </CardItem>
-                                <CardItem footer bordered>
-                                    {item.tags.map((tag, index) => {
-                                        return (
-                                            <Button rounded success key={index} style={{ marginLeft: 5, height: 40 }}>
-                                                <Text style={{ fontSize: 14 }}>{tag}</Text>
-                                            </Button>
-                                        );
-                                    })}
-                                </CardItem>
-                            </Card>
+                            <JobCard job={item}/>
                         </TouchableOpacity>
                     );
                 })}
