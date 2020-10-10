@@ -6,6 +6,8 @@ import Drawer from './Drawer';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import JobCard from './JobCard';
+import Applies from './AppliesForm';
+
 
 var fake_data = {
     applied: [
@@ -19,19 +21,19 @@ var fake_data = {
                 {
                     status: "pending",
                     employee_id: 30,
-                    description: "bo m hoc gioi",
+                    description: "Decide which technologies are going to be used and define the overall architecture",
                     cv: "link o dau day"
                 },
                 {
                     status: "approved",
                     employee_id: 29,
-                    description: "cx hoc gioi",
+                    description: "Decide which technologies are going to be used and define the overall architecture",
                     cv: "link cx o dau day"
                 },
                 {
                     status: "rejected",
                     employee_id: 28,
-                    description: "bo m hoc gioi",
+                    description: "Decide which technologies are going to be used and define the overall architecture",
                     cv: "link o dau day"
                 }
             ]
@@ -46,13 +48,13 @@ var fake_data = {
                 {
                     status: "approved",
                     employee_id: 29,
-                    description: "cx hoc gioi",
+                    description: "Building and optimizing ‘big data’ data pipelines",
                     cv: "link cx o dau day"
                 },
                 {
                     status: "rejected",
                     employee_id: 28,
-                    description: "bo m hoc gioi",
+                    description: "Building and optimizing ‘big data’ data pipelines",
                     cv: "link o dau day"
                 }
             ]
@@ -60,14 +62,12 @@ var fake_data = {
     ],
 }
 
-
-function AppliesScreen() {
-    return (
-        <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 30 }}>This is applies job!</Text>
-        </SafeAreaView>
+function AppliesScreen(){
+    return(
+        <Applies applies={fake_data.applied}/>
     );
 }
+
 
 function JobRecruitingScreen({ navigation }) {
     return (
