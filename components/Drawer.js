@@ -15,7 +15,9 @@ function Drawer(props) {
                     {props.name}
                 </Title>
             </Body>
-            <Right></Right>
+            <Right>
+                {props.right ? props.right(props.rightProps) : null}
+            </Right>
         </Header>
     );
 }
