@@ -9,7 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './components/Home';
 import { Icon } from 'native-base';
 import LoginForm from './components/LoginForm';
-import Profile from './components/Profile';
+import ProfileScreen from './components/Profile';
 
 
 function CustomDrawerContent(props) {
@@ -44,7 +44,7 @@ function App() {
             />
           ),
         }} />
-        <Drawer.Screen name="Profile" component={Profile} options={{
+        <Drawer.Screen name="Profile" component={ProfileScreen} options={{
           title: 'Profile',
           drawerIcon: () => (
             <Icon
