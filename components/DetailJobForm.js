@@ -11,7 +11,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 function DetailJobForm(props) {
-  var detail = props.detail[0];
+  var detail = props.detail
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Card transparent>
@@ -48,7 +48,7 @@ function DetailJobForm(props) {
             <CardItem bordered>
               <Body>
                 <Text>Mô tả:</Text>
-                <Text>{detail.desciption}</Text>
+                <Text>{detail.description}</Text>
               </Body>
             </CardItem>
             <CardItem footer bordered>

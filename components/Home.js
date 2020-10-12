@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, SafeAreaView } from 'react-native';
 import { Card, CardItem, Body, Text, Button } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import JobCard from './JobCard';
 import DetailJobForm from './DetailJobForm';
+import axios from 'axios';
 
 var fake_data = {
     jobs: [
@@ -55,21 +56,31 @@ var fake_data = {
     ],
 }
 
-function DetailJobScreen() {
+
+function DetailJobScreen({route, navigation}) {
     return (
-        <DetailJobForm detail={fake_data.jobs}/>
+        <DetailJobForm detail={route.params.job}/>
     );
 }
 
 function HomeScreen({ navigation }) {
-
+    const [job_data, setJob] = useState()
+    useEffect(() => {
+        axios.get(`http://192.168.1.59:8000/api/v1/jobs`)
+        .then(res => {
+            console.log(res.data);
+            setJob(res.data);
+          })
+        .catch(error => console.log(error));
+    }, []);
+    console.log(job_data);
     return (
         <View style={{ flex: 1 }}>
             <Drawer style={{ flex: 1 }} navigation={navigation} name={'Công Việc'} />
             <KeyboardAwareScrollView>
-                {fake_data.jobs.map((item, index) => {
+                {job_data.jobs.map((item, index) => {
                     return (
-                        <TouchableOpacity key={index} onPress={() => navigation.navigate('DetailJob')}>
+                        <TouchableOpacity key={index} onPress={() => navigation.navigate('DetailJob', {job: item})}>
                             <JobCard job={item}/>
                         </TouchableOpacity>
                     );
