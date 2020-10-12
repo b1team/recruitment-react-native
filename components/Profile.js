@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 
 function Avatar(props) {
     return (
-        <View style={styles.avatar}>
+        <View style={styles.avatar, {alignSelf: "center"}}>
 
             <TextAvatar
                 backgroundColor={'black'}
@@ -100,7 +100,7 @@ function TextInput(props) {
                     <Label>Số điện thoại</Label>
                     <Input value={phoneNumber} keyboardType="number-pad" onChangeText={(value) => setPhoneNumber(value)} />
                 </Item>
-                <Button style={styles.button} onPress={() => { Alert.alert("Update") }} disabled={disabled}>
+                <Button style={styles.button, {alignSelf: "center", marginTop: 10}} onPress={() => { Alert.alert("Update") }} disabled={disabled}>
                     <Text>Cập nhật thông tin</Text>
                 </Button>
             </Form>
