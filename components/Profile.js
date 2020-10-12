@@ -1,13 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, Alert} from 'react-native';
-import { Body, Form, Label, Item, Input, Button, Text } from 'native-base';
+import { StyleSheet, View, Alert } from 'react-native';
+import { Form, Label, Item, Input, Button, Text } from 'native-base';
 import TextAvatar from 'react-native-text-avatar';
 import Drawer from './Drawer';
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import {get_user_type_mapping} from "../Utils"
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { get_user_type_mapping } from "../Utils"
+import { createStackNavigator } from '@react-navigation/stack';
+import UpgradeSelectForm from './UpgradeSelector';
+import LoginForm from './LoginForm';
 
 
-api_data = {
+var api_data = {
     user: {
         user_id: 1,
         email: "it.vuonglv@gmail.com",
@@ -18,10 +21,12 @@ api_data = {
     }
 }
 
+var isSignedIn = true
 
-function get_avatar_text(name){
+
+function get_avatar_text(name) {
     name = name.toUpperCase()
-    if(name == ""){
+    if (name == "") {
         return "N a N"
     }
     return name.replace(/([a-z]+) .* ([a-z]+)/i, "$1 $2");
@@ -55,7 +60,7 @@ const styles = StyleSheet.create({
 
 function Avatar(props) {
     return (
-        <View style={styles.avatar}>
+        <View style={styles.avatar, {alignSelf: "center"}}>
 
             <TextAvatar
                 backgroundColor={'black'}
@@ -80,22 +85,22 @@ function TextInput(props) {
             <Form>
                 <Item floatingLabel>
                     <Label>Email</Label>
-                    <Input value={ props.user.email } disabled/>
+                    <Input value={props.user.email} disabled />
                 </Item>
                 <Item>
                     <Label>Bạn là:</Label>
-                    <Input value={ user_type } disabled/>
+                    <Input value={user_type} disabled />
                     <Button></Button>
                 </Item>
                 <Item floatingLabel>
                     <Label>Họ Và Tên</Label>
-                    <Input value={ name } onChangeText={(value) => setName(value)}/>
+                    <Input value={name} onChangeText={(value) => setName(value)} />
                 </Item>
                 <Item floatingLabel>
                     <Label>Số điện thoại</Label>
-                    <Input value={ phoneNumber } keyboardType="number-pad" onChangeText={(value) => setPhoneNumber(value)}/>
+                    <Input value={phoneNumber} keyboardType="number-pad" onChangeText={(value) => setPhoneNumber(value)} />
                 </Item>
-                <Button style={styles.button} onPress={ () => {Alert.alert("Update")} } disabled={disabled}>
+                <Button style={styles.button, {alignSelf: "center", marginTop: 10}} onPress={() => { Alert.alert("Update") }} disabled={disabled}>
                     <Text>Cập nhật thông tin</Text>
                 </Button>
             </Form>
@@ -104,26 +109,47 @@ function TextInput(props) {
 };
 
 
-function UpgradeButton(props){
-    if(props.current_user_type != "viewer"){
+function UpgradeButton(props) {
+    if (props.current_user_type != "viewer") {
         return null;
     }
     return (
-    <Button transparent onPress={() => {Alert.alert("Upgrade Form")}}><Text>Nâng cấp</Text></Button>
+        <Button transparent onPress={() => { props.navigation.navigate("UpgradeSelectForm") }}><Text>Nâng cấp</Text></Button>
     );
 }
 
 
 function Profile({ navigation }) {
+    if(!isSignedIn){
+        return <LoginForm navigation={navigation} />
+    }
     return (
         <View style={{ flex: 1 }}>
-            <Drawer navigation={navigation} right={UpgradeButton} rightProps={{current_user_type: api_data.user.user_type}}/>
+            <Drawer navigation={navigation} right={UpgradeButton} name="Người dùng" rightProps={{ current_user_type: api_data.user.user_type, navigation: navigation }} />
             <KeyboardAwareScrollView style={{ flex: 1 }}>
                 <Avatar name={get_avatar_text(api_data.user.name)}></Avatar>
-                <TextInput user={ api_data.user }/>
+                <TextInput user={api_data.user} />
             </KeyboardAwareScrollView>
         </View>
     );
 };
 
-export default Profile;
+const ProfileStack = createStackNavigator();
+
+function ProfileScreen() {
+    return (
+        <ProfileStack.Navigator>
+            <ProfileStack.Screen
+                name="Profile"
+                component={Profile}
+                options={{
+                    title: "Người dùng",
+                    headerShown: false
+                }}
+            />
+            <ProfileStack.Screen name="UpgradeSelectForm" component={UpgradeSelectForm} options={{title: "Nâng cấp tài khoản"}}/>
+        </ProfileStack.Navigator>
+    );
+}
+
+export default ProfileScreen;
