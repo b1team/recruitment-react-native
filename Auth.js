@@ -27,16 +27,14 @@ export async function setTokenState(setTokenFunction) {
 }
 
 
-export async function logout(setTokenFunction) {
+export async function logout() {
   await removeToken()
-  await setTokenState(setTokenFunction)
 }
 
 
-export async function saveToken(token, setTokenFunction) {
+export async function saveToken(token) {
   try {
     await AsyncStorage.setItem(TOKEN_FIELD_NAME, token);
-    await setTokenState(setTokenFunction)
   } catch (e) {
     console.log("Save token error" + e);
   }

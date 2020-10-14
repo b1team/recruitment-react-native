@@ -3,14 +3,16 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
-  DrawerItem,
 } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "./components/Home";
-import { Icon, Text, View, Button } from "native-base";
+import { Icon } from "native-base";
 import LoginForm from "./components/LoginForm";
 import ProfileScreen from "./components/Profile";
-import { getToken, saveToken, logout } from "./Auth";
+import store from './redux/store';
+import { Provider } from 'react-redux'
+import LogoutScreen from './redux/containers/logout';
+
 
 function CustomDrawerContent(props) {
   return (
@@ -20,90 +22,68 @@ function CustomDrawerContent(props) {
   );
 }
 
-function testComponent({navigation, route}){
-  return (
-    <View>
-      <Text>Ahihi</Text>
-      <Button onPress={() => saveToken("Vuonglv", route.params.token.setter)}><Text>Login</Text></Button>
-    </View>
-  );
-}
-
-function LogOutScreen({navigation, route}) {
-  return (
-    <View>
-      <Text>Logout</Text>
-      <Button onPress={() => logout(route.params.token.setter)}><Text>Logout</Text></Button>
-    </View>
-  );
-}
-
 
 const Drawer = createDrawerNavigator();
 
 function App() {
-  const [token, setToken] = React.useState(null)
+  const [state, setState] = React.useState()
   React.useEffect(() => {
-    getToken(setToken)
+    setState(store.getState())
   })
+  var identities = state?.authReducer
   return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Home"
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-      >
-        {console.log(token)}
-        {token ? (
-          <>
-            <Drawer.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{
-                title: "Trang chủ",
-                drawerIcon: () => <Icon name="md-home" />,
-              }}
-            />
-            <Drawer.Screen
-              name="Login"
-              component={LoginForm}
-              options={{
-                title: "Đăng nhập",
-                drawerIcon: () => <Icon name="ios-person" />,
-              }}
-            />
-            <Drawer.Screen
-              name="Profile"
-              component={ProfileScreen}
-              options={{
-                title: "Profile",
-                drawerIcon: () => <Icon name="ios-person" />,
-              }}
-            />
-            <Drawer.Screen
-              name="Logout"
-              component={LogOutScreen}
-              initialParams={{token: {setter: setToken}}}
-              options={{
-                title: "Logout",
-                drawerIcon: () => <Icon name="ios-person" />,
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <Drawer.Screen
-              name="Test"
-              component={testComponent}
-              initialParams={{token: {setter: setToken}}}
-              options={{
-                title: "Test",
-                drawerIcon: () => <Icon name="ios-person" />,
-              }}
-            />
-          </>
-        )}
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Drawer.Navigator
+          initialRouteName="Home"
+          drawerContent={(props) => <CustomDrawerContent {...props} />}
+        >
+          {identities?.token !== null ? (
+            <>
+              <Drawer.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{
+                  title: "Trang chủ",
+                  drawerIcon: () => <Icon name="md-home" />,
+                }}
+              />
+              <Drawer.Screen
+                name="Profile"
+                component={ProfileScreen}
+                options={{
+                  title: "Người dùng",
+                  drawerIcon: () => <Icon name="person" />,
+                }}
+              />
+
+              <Drawer.Screen
+                name="Logout"
+                component={LogoutScreen}
+                options={{
+                  title: "Đăng xuất",
+                  drawerIcon: () => <Icon name="log-out" />,
+                }}
+              />
+            </>
+          ) : (
+              <>
+                <Drawer.Screen
+                  name="Login"
+                  component={LoginForm}
+                  options={{
+                    title: "Đăng nhập",
+                    drawerIcon: () => <Icon name="log-in" />,
+                  }}
+                />
+              </>
+            )}
+
+
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </Provider>
+
   );
 }
 
