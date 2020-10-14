@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, SafeAreaView } from 'react-native';
 import { Card, CardItem, Body, Text, Button, Item } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -7,77 +7,41 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import JobCard from './JobCard';
 import Applies from './AppliesForm';
+import axios from 'axios';
 
-
-var fake_data = {
-    applied: [
-        {
-            job: {
-                title: 'Fullstack Devs',
-                desciption: 'The customer is of the iggest Singapore global technology',
-                tags: ['Python', 'ReactJS', 'VueJS']
-            },
-            applies: [
-                {
-                    status: "pending",
-                    employee_id: 30,
-                    description: "Decide which technologies are going to be used and define the overall architecture",
-                    cv: "link o dau day"
-                },
-                {
-                    status: "approved",
-                    employee_id: 29,
-                    description: "Decide which technologies are going to be used and define the overall architecture",
-                    cv: "link cx o dau day"
-                },
-                {
-                    status: "rejected",
-                    employee_id: 28,
-                    description: "Decide which technologies are going to be used and define the overall architecture",
-                    cv: "link o dau day"
-                }
-            ]
-        },
-        {
-            job: {
-                title: 'Python Developer',
-                desciption: 'Nghiên cứu yêu cầu nghiệp vụ và thiết kế của dự án',
-                tags: ['Python', 'Database', 'Business Analyst']
-            },
-            applies: [
-                {
-                    status: "approved",
-                    employee_id: 29,
-                    description: "Building and optimizing ‘big data’ data pipelines",
-                    cv: "link cx o dau day"
-                },
-                {
-                    status: "rejected",
-                    employee_id: 28,
-                    description: "Building and optimizing ‘big data’ data pipelines",
-                    cv: "link o dau day"
-                }
-            ]
-        }
-    ],
-}
-
-function AppliesScreen(){
-    return(
-        <Applies applies={fake_data.applied}/>
+function AppliesScreen({ route, navigation }) {
+    return (
+        <Applies applies={route.params.applied} navigation={navigation}/>
     );
 }
 
 
 function JobRecruitingScreen({ navigation }) {
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+    var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJ0dW5nbnRAZ21haWwuY29tIiwidXNlcl90eXBlIjoiZW1wbG95ZXIiLCJuYW1lIjoidHVuZ250IiwidXBkYXRlZCI6IjIwMjAtMTAtMTJUMTY6MTM6MjIuNjk4MDk1IiwiZW1wbG95ZXJfaWQiOjIsImVtcGxveWVlX2lkIjpudWxsLCJleHAiOjE2MDMyNTAxOTMsImlhdCI6MTYwMjY0NTM5M30.KQPsN5UA-cCPr-6vAwL9zYgYmyoj6PTi1er0dusL5tU"
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    var employer_id = 2
+    useEffect(() => {
+        axios.get(`http://recruitment.api.pythonistavn.com/api/v1/employers/${employer_id}/applies`,
+        config)
+        .then(response => setData(response.data))
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
+    }, []);
+    if (isLoading) {
+        return <View><Text>Loading.............</Text></View>
+    }
     return (
         <View style={{ flex: 1 }}>
             <Drawer style={{ flex: 1 }} navigation={navigation} name={'Đang tuyển'} />
             <KeyboardAwareScrollView>
-                {fake_data.applied.map((item, index) => {
+                {data.applied.map((item, index) => {
                     return (
-                        <TouchableOpacity key={index} onPress={() => navigation.navigate('Applies')}>
-                            <JobCard job={item.job}/>
+                        <TouchableOpacity key={index} onPress={() => navigation.navigate('Applies', { applied: item})}>
+                            <JobCard job={item.job} />
                         </TouchableOpacity>
                     );
                 })}
