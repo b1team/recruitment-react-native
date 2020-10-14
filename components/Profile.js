@@ -7,7 +7,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { get_user_type_mapping } from "../Utils"
 import { createStackNavigator } from '@react-navigation/stack';
 import UpgradeSelectForm from './UpgradeSelector';
-import LoginForm from './LoginForm';
+import LoginFlow from '../redux/containers/LoginForm';
 
 
 var api_data = {
@@ -121,7 +121,7 @@ function UpgradeButton(props) {
 
 function Profile({ navigation }) {
     if(!isSignedIn){
-        return <LoginForm navigation={navigation} />
+        return <LoginFlow navigation={navigation} />
     }
     return (
         <View style={{ flex: 1 }}>
