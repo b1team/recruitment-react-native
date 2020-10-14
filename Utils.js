@@ -1,5 +1,3 @@
-const { get } = require("react-native/Libraries/Utilities/PixelRatio")
-
 export function get_user_type_mapping(user_type){
     var mapping = {
         employee: "Người Tìm Việc",
