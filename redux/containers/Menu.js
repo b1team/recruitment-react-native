@@ -4,12 +4,11 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "../../components/Home";
 import { Icon } from "native-base";
 import LoginFlow from "./LoginForm";
 import ProfileScreen from "../../components/Profile";
-import LogoutScreen from "./logout";
+import LogoutScreen from "./Logout";
 import { connect } from "react-redux";
 
 const Drawer = createDrawerNavigator();
@@ -22,10 +21,8 @@ function CustomDrawerContent(props) {
     );
   }
 
-function FooView(props) {
-//   console.log("FOO" + JSON.stringify(props));
-  const identities = props.state.authReducer
-  console.log("FOO  " + JSON.stringify(identities));
+function Menu(props) {
+  const identities = props.state.authReducer.identities
   return (
     <Drawer.Navigator
       initialRouteName="Home"
@@ -39,7 +36,7 @@ function FooView(props) {
           drawerIcon: () => <Icon name="md-home" />,
         }}
       />
-      {identities?.token !== null ? (
+      {identities?.access_token !== null ? (
         <>
           <Drawer.Screen
             name="Profile"
@@ -82,5 +79,5 @@ function mapStateToProps(state) {
     };
   }
 
-export default connect(mapStateToProps)(FooView);
+export default connect(mapStateToProps)(Menu);
 

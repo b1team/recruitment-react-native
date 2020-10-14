@@ -6,10 +6,10 @@ import MainLogo from "../../components/Logo";
 import Drawer from "../../components/Drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignUpForm from "./SignUpForm";
-import { Provider } from "react-redux";
-import store from "../store";
-import { loginAction } from "../actions/auth";
+import { login } from "../actions/auth";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import BackToHomeScreen from '../../components/BackToHome';
+
 
 const styles = StyleSheet.create({
   email: {
@@ -42,8 +42,14 @@ const styles = StyleSheet.create({
   },
 });
 
+
 function LoginForm({navigation, state, dispatch}) {
-  console.log(state);
+  console.log(state)
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  if(state?.identities.access_token != null){
+    return <BackToHomeScreen navigation={navigation} />
+  }
   return (
     <View style={{ flex: 1 }}>
       <Drawer navigation={navigation} name="Đăng nhập" />
@@ -52,19 +58,21 @@ function LoginForm({navigation, state, dispatch}) {
           <MainLogo width={150} height={150} />
           <View style={styles.formAlign}>
             <Item style={styles.email}>
-              <Input placeholder="Email" Icon style={styles.input} />
+              <Input keyboardType="email-address" placeholder="Email" Icon style={styles.input} value={email} onChangeText={(e) => setEmail(e)}/>
             </Item>
             <Item style={styles.password}>
               <Input
                 placeholder="Mật khẩu"
                 secureTextEntry={true}
                 style={styles.input}
+                value={password}
+                onChangeText={(p) => setPassword(p)}
               />
             </Item>
           </View>
           <Button
             style={styles.button}
-            onPress={() => {dispatch(loginAction("asdf", "sdfasf"));}}
+            onPress={() => {dispatch(login(email, password));}}
           >
             <Text style={{ fontSize: 16 }}>Đăng nhập</Text>
           </Button>
@@ -78,12 +86,6 @@ function LoginForm({navigation, state, dispatch}) {
               Đăng ký
             </Text>
           </Text>
-          <Button
-            style={styles.button}
-            onPress={() => {navigation.navigate("Home")}}
-          >
-            <Text style={{ fontSize: 16 }}>Home</Text>
-          </Button>
         </Body>
       </KeyboardAwareScrollView>
     </View>
@@ -92,13 +94,12 @@ function LoginForm({navigation, state, dispatch}) {
 
 const Stack = createStackNavigator();
 
-function LoginFlow(props) {
-  // console.log(props)
+function LoginFlow() {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="LoginForm"
-        component={connect(mapStateToProps)(LoginForm)}
+        component={connect(mapStateToIdentitiesProps)(LoginForm)}
         options={{ title: "Đăng nhập", headerShown: false }}
       />
       <Stack.Screen
@@ -113,6 +114,12 @@ function LoginFlow(props) {
 function mapStateToProps(state) {
   return {
     state: state,
+  };
+}
+
+function mapStateToIdentitiesProps(state) {
+  return {
+    state: state?.authReducer,
   };
 }
 
