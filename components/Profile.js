@@ -2,12 +2,13 @@ import React from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { Form, Label, Item, Input, Button, Text } from 'native-base';
 import TextAvatar from 'react-native-text-avatar';
+import {connect} from 'react-redux';
 import Drawer from './Drawer';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { get_user_type_mapping } from "../Utils"
 import { createStackNavigator } from '@react-navigation/stack';
 import UpgradeSelectForm from './UpgradeSelector';
-import LoginForm from './LoginForm';
+import LoginFlow from '../redux/containers/LoginForm';
 
 
 var api_data = {
@@ -119,16 +120,18 @@ function UpgradeButton(props) {
 }
 
 
-function Profile({ navigation }) {
-    if(!isSignedIn){
-        return <LoginForm navigation={navigation} />
+function Profile({ navigation, state, dispatch }) {
+    console.log("S: " + state)
+    const {identities} = state.authReducer
+    if(identities.access_token == null){
+        return <LoginFlow navigation={navigation} />
     }
     return (
         <View style={{ flex: 1 }}>
-            <Drawer navigation={navigation} right={UpgradeButton} name="Người dùng" rightProps={{ current_user_type: api_data.user.user_type, navigation: navigation }} />
+            <Drawer navigation={navigation} right={UpgradeButton} name="Người dùng" rightProps={{ current_user_type: identities.user_type, navigation: navigation }} />
             <KeyboardAwareScrollView style={{ flex: 1 }}>
                 <Avatar name={get_avatar_text(api_data.user.name)}></Avatar>
-                <TextInput user={api_data.user} />
+                <TextInput user={identities}/>
             </KeyboardAwareScrollView>
         </View>
     );
@@ -141,7 +144,7 @@ function ProfileScreen() {
         <ProfileStack.Navigator>
             <ProfileStack.Screen
                 name="Profile"
-                component={Profile}
+                component={connect(mapStateToProps)(Profile)}
                 options={{
                     title: "Người dùng",
                     headerShown: false
@@ -151,5 +154,11 @@ function ProfileScreen() {
         </ProfileStack.Navigator>
     );
 }
+
+function mapStateToProps(state) {
+    return {
+      state: state,
+    };
+  }
 
 export default ProfileScreen;

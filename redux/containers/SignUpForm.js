@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Body, Item, Input, Button, Text } from 'native-base';
-import MainLogo from './Logo'
-import Drawer from './Drawer';
+import MainLogo from '../../components/Logo'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const styles = StyleSheet.create({
@@ -76,7 +75,6 @@ function SignUpForm({ navigation }) {
 
     return (
         <View style={{ flex: 1 }}>
-            <Drawer navigation={navigation} />
             <KeyboardAwareScrollView style={{ flex: 1 }}>
                 <Body>
                     <MainLogo width={130} height={130} />
@@ -84,7 +82,7 @@ function SignUpForm({ navigation }) {
                     <SignUpButton />
                     <Text style={{ marginTop: 15 }}>Đã có tài khoản?
                     {/* TODO: link to login form */}
-                        <Text style={{ color: 'blue' }} onPress={() => alert("login form")}> Đăng nhập</Text>
+                        <Text style={{ color: 'blue' }} onPress={() => navigation.navigate("LoginForm")}> Đăng nhập</Text>
                     </Text>
                 </Body>
             </KeyboardAwareScrollView>
