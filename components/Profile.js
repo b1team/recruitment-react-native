@@ -7,7 +7,7 @@ import Drawer from './Drawer';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { get_user_type_mapping } from "../Utils"
 import { createStackNavigator } from '@react-navigation/stack';
-import UpgradeSelectForm from './UpgradeSelector';
+import UpgradeSelectForm from '../redux/containers/UpgradeSelector';
 import LoginFlow from '../redux/containers/LoginForm';
 import { logoutAction } from '../redux/actions/auth';
 
@@ -74,6 +74,7 @@ function UpgradeButton(props) {
 function Profile({ navigation, state, dispatch }) {
     const { identities } = state.authReducer
     const user = identities
+    console.log("USER"+JSON.stringify(user));
     if (user?.access_token == null) {
         return <LoginFlow navigation={navigation} />
     }

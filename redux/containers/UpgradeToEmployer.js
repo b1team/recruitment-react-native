@@ -1,19 +1,33 @@
 import { Alert, StyleSheet } from "react-native";
 import React from "react";
-import { TextInput, Title} from "react-native-paper";
-import {Button, Text} from "native-base"
+import { connect } from 'react-redux';
+import Loader from '../../components/LoaderScreen';
+import { TextInput, Title } from "react-native-paper";
+import { Button, Text, View } from "native-base"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { PRIMARY } from "../Colors";
+import { PRIMARY } from "../../Colors";
+import { upgradeToEmployer } from '../actions/upgrade';
 
-function UpgradeToEmployerForm({}) {
+function UpgradeToEmployerForm({ dispatch, identities, upgradeState }) {
   const [companyName, setCompanyName] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [description, setDescription] = React.useState("");
 
+  const info = {
+    name: companyName,
+    code: companyName.toLowerCase().replace(" ", "-"),
+    description: description,
+    address: address,
+    active: true,
+    type: "outsourcing"
+  }
+
   return (
+    <View>
+      {upgradeState?.upgradeUserReqesting ? <Loader /> : null}
       <KeyboardAwareScrollView style={{ padding: 10 }}>
         <Title style={{ alignSelf: "center", marginBottom: 10 }}>
-        Trở thành nhà tuyển dụng
+          Trở thành nhà tuyển dụng
         </Title>
         <TextInput
           mode="flat"
@@ -46,8 +60,12 @@ function UpgradeToEmployerForm({}) {
           }}
           style={styles.inputStyle, styles.mutlilineStyle}
         />
-        <Button style={{alignSelf: "center", marginTop: 10}} onPress={() => {Alert.alert("Nang cap")}}><Text>Nâng cấp</Text></Button>
+        <Button style={{ alignSelf: "center", marginTop: 10 }} onPress={() => { dispatch(upgradeToEmployer(identities.access_token, info)) }}><Text>Nâng cấp</Text></Button>
+        {upgradeState?.error ? <Text style={{alignSelf: "center", margin: 10, color: "red"}}>{upgradeState?.errorMessage}</Text> : null}
+        {upgradeState?.upgradeUserDone && !upgradeState?.error ? <Text style={{alignSelf: "center", margin: 10, color: "green"}}>Nâng cấp thành công, Đăng nhập lại để áp dụng thay đổi</Text> : null}
       </KeyboardAwareScrollView>
+    </View>
+
   );
 }
 
@@ -61,4 +79,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default UpgradeToEmployerForm;
+function mapStateToProps(state) {
+  return {
+    identities: state.authReducer.identities,
+    upgradeState: state.upgradeUserReducer
+  }
+}
+
+export default connect(mapStateToProps)(UpgradeToEmployerForm);
