@@ -6,22 +6,15 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-const Loader = props => {
-  const {
-    loading,
-    ...attributes
-  } = props;
-  if(!loading){
-      return null
-  }
+function Loader() {
   return (
     <Modal
       transparent={true}
       animationType={'none'}
-      onRequestClose={() => {console.log('close modal')}}>
+      onRequestClose={() => { console.log('close modal') }}>
       <View style={styles.modalBackground}>
         <View style={styles.activityIndicatorWrapper}>
-        <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" />
         </View>
       </View>
     </Modal>
@@ -34,10 +27,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: '#00000040'
+    backgroundColor: '#00000050'
   },
   activityIndicatorWrapper: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F1F1F1',
     height: 100,
     width: 100,
     borderRadius: 10,

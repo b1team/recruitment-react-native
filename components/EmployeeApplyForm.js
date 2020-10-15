@@ -1,36 +1,58 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Alert} from "react-native";
 import {
-  Item,
-  Input,
   Button,
   Text,
-  Form,
-  Textarea,
   Content,
   Card,
   CardItem,
-  Body,
+  Body
 } from "native-base";
 import Drawer from "./Drawer";
-import styles from "../Style/CrudJobStyle";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import LoginForm from './LoginForm';
+import styles from '../Style/CrudJobStyle';
+import UpgradeScreen from './UpgradeSelector';
+import { TextInput, Title } from "react-native-paper";
+import { PRIMARY } from "../Colors";
+import axios from 'axios';
 
+function createApply(job, description, cv) {
 
-function Buttons() {
-  return (
-    <View>
-      <Button success style={styles.button}>
-        <Text style={{ fontSize: 16 }}>Gửi CV</Text>
-      </Button>
-      <Button success style={styles.destroyButton}>
-        <Text style={{ fontSize: 16 }}>Hủy</Text>
-      </Button>
-    </View>
-  );
+  var token="TOKEN"
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+
+  const bodyParameters = {
+      job_id: job.id,
+      description: description.trim(),
+      cv: cv,
+  };
+  console.log(bodyParameters);
+  axios.post('API_URL',
+  bodyParameters,
+  config)
+  .then(response => response.status==200?Alert.alert("Ứng tuyển thành công"):null)
+  .catch((error) => Alert.alert(error.response.data.detail));
 }
 
-function ApplyForm({ navigation }) {
+
+var isSignedIn = true
+var userType = "employee"
+
+function ApplyForm(props) {
+  const [cv, setCV] = React.useState("");
+  const [description, setDescription] = React.useState("");
+
+  var job = props.job
+  var navigation = props.navigation
+  if (!isSignedIn) {
+    return <LoginForm navigation={navigation} />
+  }
+  else if (userType == "viewer") {
+    return <UpgradeScreen />
+  }
   return (
     <View style={{ flex: 1 }}>
       <Drawer navigation={navigation} name={"Ứng tuyển"} />
@@ -39,18 +61,38 @@ function ApplyForm({ navigation }) {
           <Card transparent>
             <CardItem>
               <Body>
-                <Text>Senior Android Developers (Kotlin, Java)</Text>
+                <Title>{job.title}</Title>
               </Body>
             </CardItem>
           </Card>
-        </Content>
-        <Item style={styles.textInput}>
-          <Input placeholder="Đường dẫn tới CV" style={styles.input} />
-        </Item>
-        <Form>
-          <Textarea rowSpan={5} bordered placeholder="Desciption" />
-        </Form>
-        <Buttons />
+        </Content> 
+        <TextInput
+          mode="flat"
+          label="Đường dẫn tới CV"
+          theme={{
+            colors: { primary: PRIMARY, underlineColor: "transparent" },
+          }}
+          value={cv}
+          onChangeText={(text) => setCV(text)}
+          style={{marginBottom: 10}}
+        />
+        <TextInput
+          multiline
+          mode="flat"
+          label="Mô tả"
+          theme={{
+            colors: { primary: PRIMARY, underlineColor: "transparent" },
+          }}
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+          style={{ marginBottom: 10, textAlignVertical: "top", height: 200}}
+        />
+        <Button success style={styles.button} onPress={() => { createApply(job, description, cv) }}>
+          <Text style={{ fontSize: 16 }}>Gửi CV</Text>
+        </Button>
+        <Button success style={styles.destroyButton} onPress={() => { navigation.navigate("DetailJob") }}>
+          <Text style={{ fontSize: 16 }}>Hủy</Text>
+        </Button>
       </KeyboardAwareScrollView>
     </View>
   );
