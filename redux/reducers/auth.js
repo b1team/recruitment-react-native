@@ -38,6 +38,7 @@ export default function authReducer(state = initialState, action) {
                 ...state,
                 loginReqesting: false,
                 loginDone: true,
+                error: action.error,
                 errorMessage: action.errorMessage
             }
         case types.LOGOUT:

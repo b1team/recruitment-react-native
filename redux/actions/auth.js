@@ -1,5 +1,6 @@
 import * as types from '../action_types';
 import axios from 'axios';
+import * as CONSTANTS from '../constants';
 
 export function loginRequest() {
     return {
@@ -7,10 +8,11 @@ export function loginRequest() {
     }
 }
 
-export function loginError(error) {
+export function loginError(error_message) {
     return {
         type: types.LOGIN_ERROR,
-        errorMessage: error
+        errorMessage: error_message,
+        error: true
     }
 }
 
@@ -24,6 +26,14 @@ export function logoutAction() {
     return {
         type: types.LOGOUT
     };
+}
+
+function handleErrorMessage(response){
+    const message = CONSTANTS.status_message_mapping[response.status]
+    if(!message){
+        return JSON.stringify(response.data.detail)
+    }
+    return message
 }
 
 export function login(email, password) {
@@ -40,6 +50,6 @@ export function login(email, password) {
           .then((response) => {
             dispatch(loginSuccess(response.data))
           })
-          .catch((err) => {console.log('err:', err); dispatch(loginError(JSON.stringify(err)))})
+          .catch((err) => {dispatch(loginError(handleErrorMessage(err.response)))})
       }
 }

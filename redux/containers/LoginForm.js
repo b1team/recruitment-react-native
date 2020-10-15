@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Body, Item, Input, Button, Text } from "native-base";
 import MainLogo from "../../components/Logo";
 import Drawer from "../../components/Drawer";
@@ -9,7 +9,7 @@ import SignUpForm from "./SignUpForm";
 import { login } from "../actions/auth";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import BackToHomeScreen from '../../components/BackToHome';
-
+import Loader from '../../components/LoaderScreen';
 
 const styles = StyleSheet.create({
   email: {
@@ -52,6 +52,7 @@ function LoginForm({navigation, state, dispatch}) {
   }
   return (
     <View style={{ flex: 1 }}>
+      <Loader loading={state.loginReqesting} />
       <Drawer navigation={navigation} name="Đăng nhập" />
       <KeyboardAwareScrollView>
         <Body>
@@ -72,7 +73,7 @@ function LoginForm({navigation, state, dispatch}) {
           </View>
           <Button
             style={styles.button}
-            onPress={() => {dispatch(login(email, password));}}
+            onPress={() => {if(email && password){dispatch(login(email, password))}}}
           >
             <Text style={{ fontSize: 16 }}>Đăng nhập</Text>
           </Button>
@@ -86,6 +87,7 @@ function LoginForm({navigation, state, dispatch}) {
               Đăng ký
             </Text>
           </Text>
+          {state.error ? <Text style={{ fontSize: 16, color: "red" }}>{state.errorMessage}</Text> : null}
         </Body>
       </KeyboardAwareScrollView>
     </View>
