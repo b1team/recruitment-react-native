@@ -4,6 +4,7 @@ const initialState = {
     identities: {
         id: null,
         email: null,
+        name: null,
         user_type: null,
         access_token: null,
         employer_id: null,
