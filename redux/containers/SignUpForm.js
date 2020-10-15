@@ -63,7 +63,7 @@ function SignUpForm({ navigation, state, dispatch }) {
                     <MainLogo width={130} height={130} />
                     <View style={styles.formAlign}>
                         <Item style={styles.email}>
-                            <Input placeholder='Email' style={styles.input} value={email} onChangeText={(e) => setEmail(e)} />
+                            <Input placeholder='Email' keyboardType="email-address" style={styles.input} value={email} onChangeText={(e) => setEmail(e)} />
                         </Item>
                         <Item style={styles.password}>
                             <Input placeholder='Mật khẩu' secureTextEntry={true} style={styles.input} value={password} onChangeText={(p) => setPassword(p)} />
@@ -72,18 +72,18 @@ function SignUpForm({ navigation, state, dispatch }) {
                             <Input placeholder='Tên người dùng' Icon style={styles.input} value={name} onChangeText={(n) => setName(n)} />
                         </Item>
                         <Item style={styles.mobileNumber}>
-                            <Input placeholder='Số điện thoại' Icon style={styles.input} value={phone_number} onChangeText={(p) => setPhoneNumber(p)} />
+                            <Input placeholder='Số điện thoại' keyboardType="number-pad" Icon style={styles.input} value={String(phone_number)} onChangeText={(p) => setPhoneNumber(p)} />
                         </Item>
 
                     </View>
-                    <Button primary style={styles.button} onPress={() => { signupButtonHandler(dispatch, email, password, name, phone_number) }}>
+                    <Button primary disabled={state?.signupRequesting} style={styles.button} onPress={() => { signupButtonHandler(dispatch, email, password, name, phone_number) }}>
                         <Text style={{ fontSize: 16 }}>Đăng ký</Text>
                     </Button>
                     <Text style={{ marginTop: 15 }}>Đã có tài khoản?
                         <Text style={{ color: 'blue' }} onPress={() => navigation.navigate("LoginForm")}> Đăng nhập</Text>
                     </Text>
                     {state?.error ? <Text style={{ color: "red" }}>{state?.errorMessage}</Text> : null}
-                    {state?.signupDone ? <Text style={{ color: "green" }}>Đăng ký thành công</Text> : null}
+                    {state?.signupDone && !state?.error ? <Text style={{ color: "green" }}>Đăng ký thành công</Text> : null}
                 </Body>
             </KeyboardAwareScrollView>
         </View>

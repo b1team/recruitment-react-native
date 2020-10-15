@@ -13,19 +13,23 @@ export default function signupReducer(state = initialState, action) {
         case types.SIGNUP_REQUEST:
             return {
                 ...state,
-                signupRequesting: true
+                signupRequesting: true,
+                signupDone: false,
+                error: false
             }
         case types.SIGNUP_SUCCESS:
             return {
                 ...state,
                 signupRequesting: false,
-                signupDone: true
+                signupDone: true,
+                error: false
             }
         case types.SIGNUP_ERROR:
             return {
                 ...state,
                 signupRequesting: false,
                 error: action.error,
+                signupDone: false,
                 errorMessage: action.errorMessage
             }
         default:
