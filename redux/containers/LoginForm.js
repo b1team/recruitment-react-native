@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
 
 
 function LoginForm({navigation, state, dispatch}) {
-  console.log(state)
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
   if(state?.identities.access_token != null){
@@ -52,7 +51,7 @@ function LoginForm({navigation, state, dispatch}) {
   }
   return (
     <View style={{ flex: 1 }}>
-      <Loader loading={state.loginReqesting} />
+      {state.loginReqesting ? <Loader/>: null}
       <Drawer navigation={navigation} name="Đăng nhập" />
       <KeyboardAwareScrollView>
         <Body>
