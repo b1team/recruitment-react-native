@@ -8,7 +8,6 @@ const initialState = {
 };
 
 export default function dataAppliesReducer(state=initialState, action){
-  console.log("============DATAaPPLIESREDUCER=================");  
   switch (action.type) {
         case types.FETCHING_APPLIES_DATA:
           return {

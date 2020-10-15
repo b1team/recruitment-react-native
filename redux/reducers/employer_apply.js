@@ -7,10 +7,8 @@ const initialState = {
 
 
 export default function ApplyReducer(state = initialState, action) {
-    console.log("++++++++++APPLYREDUCER+++++++++++++++=");
     switch (action.type) {
         case types.APPROVE_APPLY:
-            console.log("STATE THAY DOI" + JSON.stringify(action.payload));
             return {
                 ...state,
                 apply_id: action.payload.apply_id,
