@@ -81,7 +81,6 @@ function SignUpForm({ navigation }) {
                     <TextInput />
                     <SignUpButton />
                     <Text style={{ marginTop: 15 }}>Đã có tài khoản?
-                    {/* TODO: link to login form */}
                         <Text style={{ color: 'blue' }} onPress={() => navigation.navigate("LoginForm")}> Đăng nhập</Text>
                     </Text>
                 </Body>
