@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { Form, Label, Item, Input, Button, Text } from 'native-base';
 import TextAvatar from 'react-native-text-avatar';
-import Drawer from './Drawer';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { get_user_type_mapping } from "../Utils"
+import { get_user_type_mapping } from "../../Utils"
 import { createStackNavigator } from '@react-navigation/stack';
-import UpgradeSelectForm from './UpgradeSelector';
-import LoginForm from './LoginForm';
+import UpgradeSelectForm from '../../components/UpgradeSelector';
+import LoginForm from '../../components/LoginForm';
+import Drawer from '../../components/Drawer'
 
 
 var api_data = {
