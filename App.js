@@ -1,59 +1,17 @@
-import React from 'react'
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from './components/Home';
-import { Icon } from 'native-base';
-import LoginForm from './components/LoginForm';
-import ProfileScreen from './components/Profile';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import store from "./redux/store";
+import { Provider } from "react-redux";
+import Menu from "./redux/containers/Menu"
 
-
-function CustomDrawerContent(props) {
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-    </DrawerContentScrollView>
-  );
-}
-
-
-const Drawer = createDrawerNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home" drawerContent={props => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen name="Home" component={HomeScreen} options={{
-          title: 'Trang chủ',
-          drawerIcon: () => (
-            <Icon
-              name="md-home"
-            />
-          ),
-        }} />
-
-        <Drawer.Screen name="Login" component={LoginForm} options={{
-          title: 'Đăng nhập',
-          drawerIcon: () => (
-            <Icon
-              name="ios-person"
-            />
-          ),
-        }} />
-        <Drawer.Screen name="Profile" component={ProfileScreen} options={{
-          title: 'Profile',
-          drawerIcon: () => (
-            <Icon
-              name="ios-person"
-            />
-          ),
-        }} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Menu/>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
