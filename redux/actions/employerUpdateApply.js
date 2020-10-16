@@ -24,7 +24,7 @@ function ApplyStatus(apply_id, employer_id, status, token) {
   axios.put(`http://recruitment.api.pythonistavn.com/api/v1/employers/${employer_id}/applies`,
     bodyParameters,
     config)
-    .then(response => handleResponse(response, status))
+    .then(response => handleResponse(response, status)).catch((error) => {console.log(error)})
 }
 
 

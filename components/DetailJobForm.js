@@ -11,11 +11,20 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 
-var userType = "employee"
+function applyButtonHandler(user_type, job, navigation) {
+  if (user_type == "viewer") {
+    Alert.alert("Hãy trở thành Người tìm việc để thực hiện hành động này")
+  }
+  else {
+    navigation.navigate("ApplyScreen", { job: job })
+  }
+}
 
-function DetailJobForm(props) {
-  var job = props.detail
-  var navigation = props.navigation
+
+function DetailJobForm({ detail, identities, navigation }) {
+  var job = detail
+  console.log("IDEN: " + JSON.stringify(identities))
+  const user_type = identities.user_type ? identities.user_type : "viewer"
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Card transparent>
@@ -56,7 +65,7 @@ function DetailJobForm(props) {
               </Body>
             </CardItem>
             <CardItem footer bordered>
-              {userType == "employer" ? null : <Button primary style={{ width: 250, marginLeft: 35 }} onPress={() => {navigation.navigate("ApplyScreen", {job: job})}}>
+              {user_type == "employer" ? null : <Button primary style={{ width: 250, marginLeft: 35 }} onPress={() => applyButtonHandler(user_type, navigation, job) }>
                 <Text style={{ marginLeft: 70 }}>Ứng Tuyển</Text>
               </Button>}
             </CardItem>

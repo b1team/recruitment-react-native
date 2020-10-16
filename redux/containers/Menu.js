@@ -10,16 +10,20 @@ import LoginFlow from "./LoginForm";
 import ProfileScreen from "../../components/Profile";
 import LogoutScreen from "./Logout";
 import { connect } from "react-redux";
+import JobRecruitingStack from './JobRecruitingForm';
+import AddJobForm from './AddJobForm';
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
-    return (
-      <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-      </DrawerContentScrollView>
-    );
-  }
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+    </DrawerContentScrollView>
+  );
+}
+
+
 
 function Menu(props) {
   const identities = props.state.authReducer.identities
@@ -38,6 +42,25 @@ function Menu(props) {
       />
       {identities?.access_token !== null ? (
         <>
+          {identities?.user_type == "employer" ?
+            <>
+              <Drawer.Screen
+                name="RecruitingScreen"
+                component={JobRecruitingStack}
+                options={{
+                  title: "Đang tuyển",
+                  drawerIcon: () => <Icon name="briefcase" />,
+                }}
+              />
+              <Drawer.Screen
+                name="AddJobForm"
+                component={AddJobForm}
+                options={{
+                  title: "Đăng tuyển",
+                  drawerIcon: () => <Icon name="add" />,
+                }}
+              /></>
+            : null}
           <Drawer.Screen
             name="Profile"
             component={ProfileScreen}
@@ -57,27 +80,27 @@ function Menu(props) {
           />
         </>
       ) : (
-        <>
-          <Drawer.Screen
-            name="Login"
-            component={LoginFlow}
-            options={{
-              title: "Đăng nhập",
-              drawerIcon: () => <Icon name="log-in" />,
-            }}
-          />
-        </>
-      )}
+          <>
+            <Drawer.Screen
+              name="Login"
+              component={LoginFlow}
+              options={{
+                title: "Đăng nhập",
+                drawerIcon: () => <Icon name="log-in" />,
+              }}
+            />
+          </>
+        )}
     </Drawer.Navigator>
   );
 }
 
 
 function mapStateToProps(state) {
-    return {
-      state: state,
-    };
-  }
+  return {
+    state: state,
+  };
+}
 
 export default connect(mapStateToProps)(Menu);
 

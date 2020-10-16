@@ -21,16 +21,16 @@ export function getAppliesDataFailure() {
     }
 }
 
-export function fetchAppliesData(token) {
+export function fetchAppliesData(identities) {
     return (dispatch) => {
         dispatch(getAppliesData())
         const config = {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${identities.access_token}` }
         };
-        var employer_id = 2
+        var employer_id = identities.employer_id
         axios.get(`http://recruitment.api.pythonistavn.com/api/v1/employers/${employer_id}/applies`,
             config)
             .then(response => { dispatch(getAppliesDataSuccess(response.data)) })
-            .catch((error) => console.error(error))
+            .catch((error) => console.error(error.response))
     }
 }
