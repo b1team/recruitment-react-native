@@ -65,7 +65,7 @@ function DetailJobForm({ detail, identities, navigation }) {
               </Body>
             </CardItem>
             <CardItem footer bordered>
-              {user_type == "employer" ? null : <Button primary style={{ width: 250, marginLeft: 35 }} onPress={() => applyButtonHandler(user_type, navigation, job) }>
+              {user_type == "employer" ? null : <Button primary style={{ width: 250, marginLeft: 35 }} onPress={() => applyButtonHandler(user_type, job, navigation) }>
                 <Text style={{ marginLeft: 70 }}>Ứng Tuyển</Text>
               </Button>}
             </CardItem>
