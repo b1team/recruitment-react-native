@@ -10,7 +10,7 @@ import LoginFlow from "./LoginForm";
 import ProfileScreen from "../../components/Profile";
 import LogoutScreen from "./Logout";
 import { connect } from "react-redux";
-import UpdateApplyForm from './UpdateApplyEmployee';
+import AppliedStack from './AppliedEmployeeForm';
 
 const Drawer = createDrawerNavigator();
 
@@ -37,14 +37,6 @@ function Menu(props) {
           drawerIcon: () => <Icon name="md-home" />,
         }}
       />
-      <Drawer.Screen
-        name="UpdateApplyForm"
-        component={UpdateApplyForm}
-        options={{
-          title: "UpdateApplyForm",
-          drawerIcon: () => <Icon name="md-home" />,
-        }}
-      />
       {identities?.access_token !== null ? (
         <>
           <Drawer.Screen
@@ -55,6 +47,14 @@ function Menu(props) {
               drawerIcon: () => <Icon name="person" />,
             }}
           />
+          <Drawer.Screen
+        name="JobApply"
+        component={AppliedStack}
+        options={{
+          title: "Đã ứng tuyển",
+          drawerIcon: () => <Icon name="md-home" />,
+        }}
+      />
 
           <Drawer.Screen
             name="Logout"

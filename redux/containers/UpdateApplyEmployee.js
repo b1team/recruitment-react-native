@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import {
   Item,
@@ -16,17 +16,25 @@ import Drawer from "../../components/Drawer";
 import styles from "../../Style/CrudJobStyle";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { connect } from "react-redux";
+import {UpdateData} from '../actions/UpdateApplyEmployee';
+import {DeleteData} from '../actions/DeleteApplyEmployee';
 
-var fake_data = {
-  description: "lm moi thu",
-  cv: "bit.ly/tungnt24cv",
-};
-
-
-function UpdateApplyForm({ navigation, state,  dispatch}) {
-  console.log("STATE O Update Apply Form" + JSON.stringify(state));
-  const [cv, changeCV] = useState(fake_data.cv);
-  const [description, changeDes] = useState(fake_data.description);
+function UpdateApplyForm({ job_id, navigation, state, dispatch, identities }) {
+  console.log("STATE O UPDATE APPLY FORM" + JSON.stringify(state))
+  const { applied_job } = state.data
+  const [apply, setApply] = useState({})
+  const [job, setJob] = useState({})
+  useEffect(()=>{
+    for (var a of applied_job) {
+      if (a.job.id == job_id) {
+        setApply(a.apply)
+        setJob(a.job)
+      }
+    }
+  })
+  const [description, changeDes] = useState(apply.description);
+  const [cv, changeCV] = useState(apply.cv);
+  const token = identities.access_token
   return (
     <View style={{ flex: 1 }}>
       <Drawer navigation={navigation} name={"Sửa Đăng ký"} />
@@ -35,7 +43,7 @@ function UpdateApplyForm({ navigation, state,  dispatch}) {
           <Card transparent>
             <CardItem>
               <Body>
-                <Text>Senior Android Developers (Kotlin, Java)</Text>
+                <Text>{job.title}</Text>
               </Body>
             </CardItem>
           </Card>
@@ -58,22 +66,20 @@ function UpdateApplyForm({ navigation, state,  dispatch}) {
           />
         </Form>
         <Button success style={styles.button} onPress={() => dispatch(UpdateData(apply.id, token))}>
-        <Text style={{ fontSize: 16 }}>Sửa Thông Tin</Text>
-      </Button>
-      <Button success style={styles.destroyButton}>
-        <Text style={{ fontSize: 16 }}>Hủy</Text>
-      </Button>
-      <Button success style={styles.destroyButton} onPress={() => dispatch(DeleteData(apply.id, token))}>
-        <Text style={{ fontSize: 16 }}>Xóa</Text>
-      </Button>
+          <Text style={{ fontSize: 16 }}>Cập nhật</Text>
+        </Button>
+        <Button success style={styles.destroyButton} onPress={() => dispatch(DeleteData(apply.id, token))}>
+          <Text style={{ fontSize: 16 }}>Xóa</Text>
+        </Button>
       </KeyboardAwareScrollView>
     </View>
   );
 }
 function mapStateToProps(state) {
-    return {
-        state: state.ApplyEmployeeReducer,
-    };
+  return {
+    state: state.ApplyEmployeeReducer,
+    identities: state.authReducer.identities
+  };
 }
 
 
