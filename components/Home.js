@@ -8,6 +8,7 @@ import JobCard from './JobCard';
 import DetailJobForm from './DetailJobForm';
 import ApplyForm from './EmployeeApplyForm';
 import axios from 'axios';
+import Loader from './LoaderScreen';
 
 function DetailJobScreen({ route, navigation }) {
     return (
@@ -25,19 +26,18 @@ function HomeScreen({ navigation }) {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     useEffect(() => {
-        axios.get('API_URL')
+        axios.get('http://recruitment.api.pythonistavn.com/api/v1/jobs')
           .then(response => setData(response.data))
           .catch((error) => console.error(error))
           .finally(() => setLoading(false));
       }, []);
-    if(isLoading){
-        return <View><Text>Loading.............</Text></View>
-    }
+
     return (
         <View style={{ flex: 1 }}>
+            {isLoading? <Loader/> : null}
             <Drawer style={{ flex: 1 }} navigation={navigation} name={'Công Việc'} />
             <KeyboardAwareScrollView>
-                {data.jobs.map((item, index) => {
+                {data?.jobs?.map((item, index) => {
                     return (
                         <TouchableOpacity key={index} onPress={() => navigation.navigate('DetailJob', { job: item })}>
                             <JobCard job={item} />

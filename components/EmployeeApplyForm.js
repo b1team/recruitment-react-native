@@ -10,9 +10,9 @@ import {
 } from "native-base";
 import Drawer from "./Drawer";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import LoginForm from './LoginForm';
+import LoginForm from '../redux/containers/LoginForm';
 import styles from '../Style/CrudJobStyle';
-import UpgradeScreen from './UpgradeSelector';
+import UpgradeScreen from '../redux/containers/UpgradeSelector';
 import { TextInput, Title } from "react-native-paper";
 import { PRIMARY } from "../Colors";
 import axios from 'axios';
