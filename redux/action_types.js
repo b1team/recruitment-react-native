@@ -1,3 +1,5 @@
+import { exp } from "react-native/Libraries/Animated/src/Easing"
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_ERROR = "LOGIN_ERROR"
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
@@ -17,3 +19,7 @@ export const FETCHING_APPLIES_DATA_FAILURE = 'FETCHING_DATA_FAILURE'
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
 export const SIGNUP_ERROR = 'SIGNUP_ERROR'
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
+
+export const ADD_JOB_REQUEST = "ADD_JOB_REQUEST"
+export const ADD_JOB_ERROR = "ADD_JOB_ERROR"
+export const ADD_JOB_SUCCESS = "ADD_JOB_SUCCESS"

@@ -9,10 +9,11 @@ import DetailJobForm from './DetailJobForm';
 import ApplyForm from './EmployeeApplyForm';
 import axios from 'axios';
 import Loader from './LoaderScreen';
+import {connect} from 'react-redux';
 
 function DetailJobScreen({ route, navigation }) {
     return (
-        <DetailJobForm detail={route.params.job} navigation={navigation}/>
+        <DetailJobForm detail={route.params.job} navigation={navigation} identities={route.params.identities}/>
     );
 }
 
@@ -22,7 +23,7 @@ function ApplyScreen({ route, navigation }) {
     );
 }
 
-function HomeScreen({ navigation }) {
+function HomeScreen({ navigation, identities }) {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -39,7 +40,7 @@ function HomeScreen({ navigation }) {
             <KeyboardAwareScrollView>
                 {data?.jobs?.map((item, index) => {
                     return (
-                        <TouchableOpacity key={index} onPress={() => navigation.navigate('DetailJob', { job: item })}>
+                        <TouchableOpacity key={index} onPress={() => navigation.navigate('DetailJob', { job: item, identities: identities })}>
                             <JobCard job={item} />
                         </TouchableOpacity>
                     );
@@ -49,11 +50,17 @@ function HomeScreen({ navigation }) {
     );
 }
 
+function homeStateMapToProps(state){
+    return {
+        identities: state.authReducer.identities
+    }
+}
+
 const RootStack = createStackNavigator();
 function Jobs() {
     return (
         <RootStack.Navigator mode="modal" headerMode="none">
-            <RootStack.Screen name="Jobs" component={HomeScreen} />
+            <RootStack.Screen name="Jobs" component={connect(homeStateMapToProps)(HomeScreen)} />
             <RootStack.Screen name="DetailJob" component={DetailJobScreen} />
             <RootStack.Screen name="ApplyScreen" component={ApplyScreen} />
         </RootStack.Navigator>

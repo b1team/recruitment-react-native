@@ -16,16 +16,17 @@ function GetStatusMapping(status) {
     return mapping[status]
 }
 
-function Applies({ job_id, state, navigation, dispatch }) {
+function Applies({ route, state, navigation, dispatch }) {
     //nhan vao job_id
+    job_id = route.params.job_id
     const { identities } = state.authReducer
     const new_applies = state.ApplyReducer
     console.log(new_applies);
     const { applied } = state.dataAppliesReducer.data
     // const employer_id = identities.employer_id
-    const employer_id = 2 // laytu inderntit
+    const employer_id = identities.employer_id
     const [applies, setApplies] = useState([])
-    var token = "TOKEN"
+    var token = identities.access_token
     useEffect(() => {
         for (a of applied){
             if(a.job.id == job_id){
@@ -37,7 +38,7 @@ function Applies({ job_id, state, navigation, dispatch }) {
                 setApplies([{...applies, status: new_applies.status}])
         }
     }
-    dispatch(fetchAppliesData(token))
+    dispatch(fetchAppliesData(identities))
     }, [new_applies])
 
     return (
@@ -54,7 +55,7 @@ function Applies({ job_id, state, navigation, dispatch }) {
                                     <Text>
                                         {apply.description}
                                     </Text>
-                                    <Button primary onPress={() => { Linking.openURL(`https://${applies.cv}`) }}>
+                                    <Button primary onPress={() => { Linking.openURL(`https://${apply.cv}`) }}>
                                         <Text>Xem CV</Text>
                                     </Button>
                                 </Body>
