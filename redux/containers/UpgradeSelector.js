@@ -1,11 +1,14 @@
 import React from "react";
+import {connect} from 'react-redux';
 import { Alert, View, StyleSheet } from "react-native";
 import { Button, Text } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { createStackNavigator } from "@react-navigation/stack";
 import UpgradeToEmployerForm from "./UpgradeToEmployer";
+import UpgradeToEmployeeForm from "./UpgradeToEmployee";
 
-function UpgradeSelectForm({ navigation }) {
+function UpgradeSelectForm({ navigation, dispatch, state }) {
+  // console.log(state)
   return (
     <KeyboardAwareScrollView>
       <View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
@@ -19,7 +22,7 @@ function UpgradeSelectForm({ navigation }) {
         </Button>
         <Button
           onPress={() => {
-            Alert.alert("Ban co chac muon tro thanh nguoi tim viec");
+            navigation.navigate("UpgradeToEmployeeForm");
           }}
           style={styles.button}
         >
@@ -39,6 +42,12 @@ const styles = StyleSheet.create({
   },
 });
 
+function selectFormMapStateToProps(state){
+  return {
+    state: state.upgradeUserReducer
+  }
+}
+
 const UpgradeStack = createStackNavigator();
 
 function UpgradeScreen() {
@@ -46,14 +55,18 @@ function UpgradeScreen() {
     <UpgradeStack.Navigator mode="modal">
       <UpgradeStack.Screen
         name="UpgradeSelectForm"
-        component={UpgradeSelectForm}
+        component={connect(selectFormMapStateToProps)(UpgradeSelectForm)}
       />
       <UpgradeStack.Screen
         name="UpgradeToEmployerForm"
         component={UpgradeToEmployerForm}
       />
+       <UpgradeStack.Screen
+        name="UpgradeToEmployeeForm"
+        component={UpgradeToEmployeeForm}
+      />
     </UpgradeStack.Navigator>
   );
 }
 
-export default UpgradeScreen;
+export default connect()(UpgradeScreen);

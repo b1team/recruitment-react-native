@@ -10,7 +10,7 @@ function JobCard(props) {
             <CardItem bordered>
                 <Body>
                     <Text numberOfLines={2}>
-                        {props.job.desciption}
+                        {props.job.description}
                     </Text>
                 </Body>
             </CardItem>

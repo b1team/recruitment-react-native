@@ -29,10 +29,13 @@ export function logoutAction() {
 }
 
 function handleErrorMessage(response){
+    console.log("HERE1")
     const message = CONSTANTS.status_message_mapping[response.status]
     if(!message){
+        console.log("HERE2")
         return JSON.stringify(response.data.detail)
     }
+    console.log("HERE3")
     return message
 }
 
