@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import JobCard from './JobCard';
 import DetailJobForm from './DetailJobForm';
-import ApplyForm from './EmployeeApplyForm';
+import ApplyForm from '../redux/containers/EmployeeApplyForm';
 import axios from 'axios';
 import Loader from './LoaderScreen';
 import {connect} from 'react-redux';
@@ -62,7 +62,7 @@ function Jobs() {
         <RootStack.Navigator mode="modal" headerMode="none">
             <RootStack.Screen name="Jobs" component={connect(homeStateMapToProps)(HomeScreen)} />
             <RootStack.Screen name="DetailJob" component={DetailJobScreen} />
-            <RootStack.Screen name="ApplyScreen" component={ApplyScreen} />
+            <RootStack.Screen name="ApplyScreen" component={ApplyForm} />
         </RootStack.Navigator>
     );
 }
